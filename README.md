@@ -41,10 +41,14 @@ python3 -m http.server 8000
 - **技能百分比** → 改 `index.html` 裡 `.skill` 的 `data-level="85"`，數字改了長條圖會跟著變
 - **新增一段經歷** → 複製 `index.html` 裡一整塊 `<li class="job">` 再改文字
 
-## 部署到 GitHub Pages
+## 部署
 
-Repository → Settings → Pages → Source 選 `Deploy from a branch`，
-分支選你要發佈的分支、資料夾選 `/ (root)`，存檔後等一兩分鐘就會有網址。
+已經設定成**自動部署**。只要有東西推上 `main`，
+`.github/workflows/deploy-pages.yml` 就會自動把整個網站發佈到 GitHub Pages，
+不需要手動去點任何設定。
+
+進度可以在 Repository 的 Actions 分頁看；想手動重跑一次，
+到 Actions → Deploy to GitHub Pages → Run workflow。
 
 ## 無障礙與相容性
 
