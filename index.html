@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<!-- 沒有 JavaScript 時語言偵測不會執行，就停在這裡的預設值（英文） -->
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>蔡承諺 Cheng-Yen Tsai — IT 專案管理 / 資訊科技</title>
-<meta name="description" content="蔡承諺 Cheng-Yen Tsai 的個人作品集。蒙納許大學資訊科技碩士在讀，具備全端開發、資料庫與 AI 專案實作經驗，目標為 IT 專案管理。">
+<meta name="description" content="Cheng-Yen Tsai (蔡承諺) — Master of Information Technology at Monash University, moving from software engineering into IT project management.">
 <meta name="theme-color" content="#08080a">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="蔡承諺 Cheng-Yen Tsai — IT 專案管理 / 資訊科技">
-<meta property="og:description" content="蒙納許大學資訊科技碩士在讀，具備全端開發、資料庫與 AI 專案實作經驗。">
-<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="Cheng-Yen Tsai 蔡承諺 — IT Project Management / Information Technology">
+<meta property="og:description" content="Monash IT postgrad in Melbourne. Full-stack, database and AI project experience.">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2308080a'/><text y='.9em' x='50%25' text-anchor='middle' font-size='62' font-family='sans-serif' font-weight='bold' fill='%23ffae3b'>E</text></svg>">
 
@@ -21,8 +21,21 @@
 <link rel="stylesheet" href="assets/vendor/lenis.css">
 <link rel="stylesheet" href="assets/css/style.css">
 
-<!-- 只有在 JS 能跑的時候才啟用進場動畫，否則內容一律直接顯示 -->
-<script>document.documentElement.classList.add('js');</script>
+<script>
+/* 在畫面畫出來之前就決定語言，避免先閃一下中文再跳成英文。
+   順序：使用者上次選的 → 瀏覽器語言 → 英文 */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  var lang = (saved === 'zh' || saved === 'en')
+    ? saved
+    : (/^zh/i.test(navigator.language || '') ? 'zh' : 'en');
+  d.setAttribute('data-lang', lang);
+  d.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+})();
+</script>
 </head>
 
 <body>
@@ -52,18 +65,25 @@
 <header class="nav" id="nav">
   <a class="nav__logo" href="#top" data-hover>
     <span class="nav__logo-mark">E</span>
-    <span class="nav__logo-text">蔡承諺</span>
+    <span class="nav__logo-text"><span lang="zh-Hant">蔡承諺</span><span lang="en">Cheng-Yen Tsai</span></span>
   </a>
 
-  <nav class="nav__links" id="navLinks" aria-label="主選單">
-    <a href="#about"     data-hover><span>關於</span></a>
-    <a href="#work"      data-hover><span>經歷</span></a>
-    <a href="#skills"    data-hover><span>技能</span></a>
-    <a href="#education" data-hover><span>學歷</span></a>
-    <a href="#contact"   data-hover><span>聯絡</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="主選單 / Main menu">
+    <a href="#about"     data-hover><span lang="zh-Hant">關於</span><span lang="en">About</span></a>
+    <a href="#work"      data-hover><span lang="zh-Hant">經歷</span><span lang="en">Experience</span></a>
+    <a href="#projects"  data-hover><span lang="zh-Hant">作品</span><span lang="en">Projects</span></a>
+    <a href="#skills"    data-hover><span lang="zh-Hant">技能</span><span lang="en">Skills</span></a>
+    <a href="#education" data-hover><span lang="zh-Hant">學歷</span><span lang="en">Education</span></a>
+    <a href="#contact"   data-hover><span lang="zh-Hant">聯絡</span><span lang="en">Contact</span></a>
   </nav>
 
-  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="開啟選單">
+  <!-- 語言切換 -->
+  <div class="langsw" id="langsw" role="group" aria-label="Language / 語言">
+    <button type="button" data-setlang="zh" data-hover>中</button>
+    <button type="button" data-setlang="en" data-hover>EN</button>
+  </div>
+
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="開啟選單 / Open menu">
     <i></i><i></i>
   </button>
 </header>
@@ -87,19 +107,27 @@
       </h1>
 
       <div class="hero__meta">
-        <p class="hero__cn" data-reveal>蔡承諺</p>
-        <p class="hero__desc" data-reveal>
-          我正在從工程端往專案管理端走。<br>
-          把技術團隊和業務單位之間的落差補起來，是我想做的事。
+        <p class="hero__cn" data-reveal>
+          <span lang="zh-Hant">蔡承諺</span><span lang="en">Cheng-Yen Tsai</span>
         </p>
+        <div class="hero__desc" data-reveal>
+          <p lang="zh-Hant">
+            我正在從工程端往專案管理端走。<br>
+            把技術團隊和業務單位之間的落差補起來，是我想做的事。
+          </p>
+          <p lang="en">
+            I'm moving from engineering into project management.<br>
+            What I do best is bridging the gap between technical teams and business stakeholders.
+          </p>
+        </div>
       </div>
 
       <div class="hero__actions" data-reveal>
         <a class="btn btn--solid" href="#contact" data-magnetic data-hover>
-          <span>聯絡我</span>
+          <span lang="zh-Hant">聯絡我</span><span lang="en">Get in touch</span>
         </a>
         <a class="btn btn--ghost" href="#work" data-magnetic data-hover>
-          <span>看我的經歷</span>
+          <span lang="zh-Hant">看我的經歷</span><span lang="en">See my experience</span>
         </a>
       </div>
     </div>
@@ -123,45 +151,88 @@
   <section class="section" id="about">
     <div class="section__head">
       <span class="tag" data-reveal>01 — ABOUT</span>
-      <h2 class="h2"><span class="line"><span data-split>關於我</span></span></h2>
+      <!-- 大標題用 data-zh / data-en 換字，因為它有逐字動畫，不能放兩份 -->
+      <h2 class="h2"><span class="line"><span data-split data-zh="關於我" data-en="About">關於我</span></span></h2>
     </div>
 
     <div class="about">
       <div class="about__text">
-        <!-- 這段自我介紹來自 LinkedIn 的 Summary，可以自己再調整語氣 -->
-        <p class="lead" data-reveal>
-          我是蔡承諺（Cheng-Yen Tsai），目前在澳洲蒙納許大學就讀資訊科技碩士，
-          目標是成為 IT 專案經理。
-        </p>
-        <p data-reveal>
-          我的底子是資訊工程。在台聚集團（USI Corporation）擔任 IT 實習生的一年八個月裡，
-          我參與了 AI 與網頁開發專案從頭到尾的執行，其中包括一套使用 YOLO 與 TensorRT
-          的工業安全監控系統。
-        </p>
-        <p data-reveal>
-          全端開發與資料處理的實作經驗，讓我理解整個軟體開發生命週期（SDLC），
-          也能直接和工程團隊討論專案範圍與技術需求，而不是只能轉述。
-        </p>
-        <p data-reveal>
-          技術之外，中華職棒的賽事現場工作和兒童籃球教練的經驗，讓我習慣在快節奏、
-          人很多的環境裡協調不同單位、預先控制風險、把一群人凝聚起來。
-          另外在全國性數位教育計畫的教學經驗，以及在加州大學戴維斯分校（UC Davis）的學習，
-          訓練我把複雜的技術概念講給沒有技術背景的人聽。
-        </p>
+        <div class="lead" data-reveal>
+          <p lang="zh-Hant">
+            我是蔡承諺（Cheng-Yen Tsai），目前在澳洲蒙納許大學就讀資訊科技碩士，
+            目標是成為 IT 專案經理。
+          </p>
+          <p lang="en">
+            I'm Cheng-Yen Tsai, currently pursuing a Master of Information Technology
+            at Monash University, with the goal of becoming an IT Project Manager.
+          </p>
+        </div>
+
+        <div data-reveal>
+          <p lang="zh-Hant">
+            我的底子是資訊工程。在台聚集團（USI Corporation）擔任 IT 實習生的一年八個月裡，
+            我參與了 AI 與網頁開發專案從頭到尾的執行，其中包括一套使用 YOLO 與 TensorRT
+            的工業安全監控系統。
+          </p>
+          <p lang="en">
+            My foundation is in Information Engineering. Over 1 year and 8 months as an
+            IT Intern at USI Corporation, I contributed to the end-to-end execution of AI
+            and web development projects, including an industrial safety monitoring system
+            built with YOLO and TensorRT.
+          </p>
+        </div>
+
+        <div data-reveal>
+          <p lang="zh-Hant">
+            全端開發與資料處理的實作經驗，讓我理解整個軟體開發生命週期（SDLC），
+            也能直接和工程團隊討論專案範圍與技術需求，而不是只能轉述。
+          </p>
+          <p lang="en">
+            Hands-on experience in full-stack development and data processing gave me a
+            deep understanding of the software development lifecycle, so I can discuss
+            scope and technical requirements with engineering teams directly rather than
+            just relaying them.
+          </p>
+        </div>
+
+        <div data-reveal>
+          <p lang="zh-Hant">
+            技術之外，中華職棒的賽事現場工作和兒童籃球教練的經驗，讓我習慣在快節奏、
+            人很多的環境裡協調不同單位、預先控制風險、把一群人凝聚起來。
+            另外在全國性數位教育計畫的教學經驗，以及在加州大學戴維斯分校（UC Davis）的學習，
+            訓練我把複雜的技術概念講給沒有技術背景的人聽。
+          </p>
+          <p lang="en">
+            Beyond the technical side, working as event staff for the CPBL and as a youth
+            basketball coach taught me to coordinate across teams in fast-paced, crowded
+            environments, mitigate risks early, and build team cohesion. Teaching in a
+            national digital education program and studying at UC Davis sharpened my
+            ability to explain complex technical concepts to non-technical audiences.
+          </p>
+        </div>
       </div>
 
       <aside class="about__facts">
         <div class="fact" data-reveal>
           <b class="fact__num" data-count="2027">2027</b>
-          <span class="fact__label">蒙納許大學 資訊科技碩士<br>預計畢業</span>
+          <span class="fact__label">
+            <span lang="zh-Hant">蒙納許大學 資訊科技碩士<br>預計畢業</span>
+            <span lang="en">Expected graduation<br>Master of IT, Monash University</span>
+          </span>
         </div>
         <div class="fact" data-reveal>
           <b class="fact__num" data-count="20">20</b>
-          <span class="fact__label">個月<br>台聚集團 IT 實習經驗</span>
+          <span class="fact__label">
+            <span lang="zh-Hant">個月<br>台聚集團 IT 實習經驗</span>
+            <span lang="en">months<br>as an IT Intern at USI Corporation</span>
+          </span>
         </div>
         <div class="fact" data-reveal>
           <b class="fact__num" data-count="3">3</b>
-          <span class="fact__label">年<br>中華職棒賽事現場經驗</span>
+          <span class="fact__label">
+            <span lang="zh-Hant">年<br>中華職棒賽事現場經驗</span>
+            <span lang="en">years<br>of CPBL event operations</span>
+          </span>
         </div>
       </aside>
     </div>
@@ -171,21 +242,35 @@
   <section class="section section--alt" id="work">
     <div class="section__head">
       <span class="tag" data-reveal>02 — EXPERIENCE</span>
-      <h2 class="h2"><span class="line"><span data-split>工作經歷</span></span></h2>
+      <h2 class="h2"><span class="line"><span data-split data-zh="工作經歷" data-en="Experience">工作經歷</span></span></h2>
     </div>
 
     <!-- 每一個 .job 就是一段經歷，可以複製整塊來新增 -->
     <ol class="jobs">
       <li class="job" data-reveal>
-        <div class="job__when">2024.01 — 2025.08<br><small>1 年 8 個月</small></div>
+        <div class="job__when">
+          2024.01 — 2025.08<br>
+          <small><span lang="zh-Hant">1 年 8 個月</span><span lang="en">1 yr 8 mos</span></small>
+        </div>
         <div class="job__body">
-          <h3 class="job__title">台聚集團 USI Corporation</h3>
-          <p class="job__role">IT Intern　資訊部實習生　·　台北 內湖</p>
-          <ul class="job__points">
+          <h3 class="job__title">
+            <span lang="zh-Hant">台聚集團 USI Corporation</span><span lang="en">USI Corporation</span>
+          </h3>
+          <p class="job__role">
+            <span lang="zh-Hant">IT Intern　資訊部實習生　·　台北 內湖</span>
+            <span lang="en">IT Intern　·　Neihu District, Taipei</span>
+          </p>
+          <ul class="job__points" lang="zh-Hant">
             <li>使用 ASP.NET、HTML、JavaScript 開發與維護公司內部的網頁系統。</li>
             <li>以 Python 建立 AI 解決方案，為個人防護裝備（PPE）辨識模型執行資料標註，應用於工作場所安全。</li>
             <li>參與一套使用 YOLO 與 TensorRT 的工業安全監控系統，從概念到交付的完整執行過程。</li>
             <li>管理 Microsoft SQL Server 資料庫，並在 Linux 環境中維護系統運作。</li>
+          </ul>
+          <ul class="job__points" lang="en">
+            <li>Developed and maintained internal web applications using ASP.NET, HTML and JavaScript.</li>
+            <li>Built AI-driven solutions with Python, conducting data annotation for Personal Protective Equipment (PPE) recognition models to enhance workplace safety.</li>
+            <li>Contributed to the end-to-end execution of an industrial safety monitoring system using YOLO and TensorRT.</li>
+            <li>Managed Microsoft SQL Server databases and maintained system operations in Linux environments.</li>
           </ul>
           <ul class="job__tags">
             <li>ASP.NET</li><li>JavaScript</li><li>Python</li><li>SQL Server</li><li>Linux</li><li>YOLO</li><li>TensorRT</li>
@@ -195,34 +280,68 @@
       </li>
 
       <li class="job" data-reveal>
-        <div class="job__when">2022.01 — 2024.12<br><small>3 年</small></div>
+        <div class="job__when">
+          2022.01 — 2024.12<br>
+          <small><span lang="zh-Hant">3 年</span><span lang="en">3 yrs</span></small>
+        </div>
         <div class="job__body">
-          <h3 class="job__title">中華職業棒球大聯盟 CPBL</h3>
-          <p class="job__role">Event Staff　賽事現場工作人員　·　台灣</p>
-          <ul class="job__points">
+          <h3 class="job__title">
+            <span lang="zh-Hant">中華職業棒球大聯盟 CPBL</span>
+            <span lang="en">Chinese Professional Baseball League (CPBL)</span>
+          </h3>
+          <p class="job__role">
+            <span lang="zh-Hant">Event Staff　賽事現場工作人員　·　台灣</span>
+            <span lang="en">Event Staff　·　Taiwan</span>
+          </p>
+          <ul class="job__points" lang="zh-Hant">
             <li>執行現場人流管制與秩序維護。</li>
             <li>負責票務查驗與觀眾服務。</li>
             <li>賽前器材架設與賽後撤收。</li>
           </ul>
+          <ul class="job__points" lang="en">
+            <li>Executed on-site crowd control and order management.</li>
+            <li>Handled ticket verification and customer service.</li>
+            <li>Set up and tore down equipment before and after games.</li>
+          </ul>
           <ul class="job__tags">
-            <li>現場執行</li><li>跨組協調</li><li>顧客服務</li><li>臨場應變</li>
+            <li><span lang="zh-Hant">現場執行</span><span lang="en">On-site Execution</span></li>
+            <li><span lang="zh-Hant">跨組協調</span><span lang="en">Cross-team Coordination</span></li>
+            <li><span lang="zh-Hant">顧客服務</span><span lang="en">Customer Service</span></li>
+            <li><span lang="zh-Hant">臨場應變</span><span lang="en">Adaptability</span></li>
           </ul>
         </div>
         <span class="job__index" aria-hidden="true">02</span>
       </li>
 
       <li class="job" data-reveal>
-        <div class="job__when">2022.11 — 2024.01<br><small>1 年 3 個月</small></div>
+        <div class="job__when">
+          2022.11 — 2024.01<br>
+          <small><span lang="zh-Hant">1 年 3 個月</span><span lang="en">1 yr 3 mos</span></small>
+        </div>
         <div class="job__body">
-          <h3 class="job__title">活力小猴籃球營 Vigor Monkey Basketball Camp</h3>
-          <p class="job__role">Youth Basketball Coach　兒童籃球教練　·　高雄</p>
-          <ul class="job__points">
+          <h3 class="job__title">
+            <span lang="zh-Hant">活力小猴籃球營 Vigor Monkey Basketball Camp</span>
+            <span lang="en">Vigor Monkey Basketball Camp</span>
+          </h3>
+          <p class="job__role">
+            <span lang="zh-Hant">Youth Basketball Coach　兒童籃球教練　·　高雄</span>
+            <span lang="en">Youth Basketball Coach　·　Kaohsiung, Taiwan</span>
+          </p>
+          <ul class="job__points" lang="zh-Hant">
             <li>設計訓練課程與教學進度。</li>
             <li>場上戰術指導與即時修正。</li>
             <li>帶動球員的整體成長與團隊凝聚。</li>
           </ul>
+          <ul class="job__points" lang="en">
+            <li>Designed training programs and teaching progressions.</li>
+            <li>Provided on-court tactical guidance and real-time correction.</li>
+            <li>Fostered overall player development and team cohesion.</li>
+          </ul>
           <ul class="job__tags">
-            <li>教學設計</li><li>帶隊</li><li>溝通</li><li>團隊建立</li>
+            <li><span lang="zh-Hant">教學設計</span><span lang="en">Curriculum Design</span></li>
+            <li><span lang="zh-Hant">帶隊</span><span lang="en">Coaching</span></li>
+            <li><span lang="zh-Hant">溝通</span><span lang="en">Communication</span></li>
+            <li><span lang="zh-Hant">團隊建立</span><span lang="en">Team Building</span></li>
           </ul>
         </div>
         <span class="job__index" aria-hidden="true">03</span>
@@ -230,82 +349,208 @@
     </ol>
   </section>
 
-  <!-- ===================== SKILLS ===================== -->
-  <section class="section" id="skills">
+  <!-- ===================== PROJECTS ===================== -->
+  <section class="section" id="projects">
     <div class="section__head">
-      <span class="tag" data-reveal>03 — SKILLS</span>
-      <h2 class="h2"><span class="line"><span data-split>專業技能</span></span></h2>
+      <span class="tag" data-reveal>03 — PROJECTS</span>
+      <h2 class="h2"><span class="line"><span data-split data-zh="作品" data-en="Projects">作品</span></span></h2>
+    </div>
+
+    <!-- 每一張 .project 是一個作品，可以複製整塊來新增 -->
+    <div class="projects">
+
+      <article class="project" data-reveal>
+        <div class="project__head">
+          <span class="project__no" aria-hidden="true">01</span>
+          <span class="project__date">2026.09</span>
+        </div>
+        <h3 class="project__title">
+          <span lang="zh-Hant">墨爾本路邊停車即時查詢</span>
+          <span lang="en">Melbourne Street Parking</span>
+        </h3>
+        <div class="project__desc">
+          <p lang="zh-Hant">
+            用墨爾本市政府的感測器開放資料，即時顯示路邊停車位的空位狀況。
+            特別處理了一個細節：已經停止回報的感測器會被排除，而不是被當成「有空位」計算。
+          </p>
+          <p lang="en">
+            Live on-street parking availability for Melbourne, built on City of Melbourne
+            sensor open data. Sensors that have stopped reporting are excluded rather than
+            counted as free.
+          </p>
+        </div>
+        <ul class="project__tags"><li>HTML</li><li>CSS</li><li>Open Data</li></ul>
+        <a class="project__link" href="https://github.com/Ericthegoatskr/melbourne-parking-dashboard" target="_blank" rel="noopener" data-hover>
+          <span lang="zh-Hant">看原始碼</span><span lang="en">View source</span>
+          <i aria-hidden="true">↗</i>
+        </a>
+      </article>
+
+      <article class="project" data-reveal>
+        <div class="project__head">
+          <span class="project__no" aria-hidden="true">02</span>
+          <span class="project__date">2025.09 — 2025.10</span>
+        </div>
+        <h3 class="project__title">
+          <span lang="zh-Hant">AquaSync 全台水庫水情即時同步系統</span>
+          <span lang="en">AquaSync — Taiwan Reservoir Real-time Sync Platform</span>
+        </h3>
+        <div class="project__desc">
+          <p lang="zh-Hant">
+            專為台灣設計的水庫水情即時監控系統，提供全台各大水庫的即時蓄水狀況、
+            水位變化趨勢以及詳細的統計分析。採用響應式設計，在任何裝置上都能正常使用。
+          </p>
+          <p lang="en">
+            A real-time reservoir monitoring system designed specifically for Taiwan,
+            providing up-to-date water storage levels, water level trends and detailed
+            statistical analyses across major reservoirs nationwide, in a responsive
+            layout that works on any device.
+          </p>
+        </div>
+        <ul class="project__tags"><li>HTML5</li><li>CSS3</li><li>Responsive Design</li></ul>
+        <a class="project__link" href="https://github.com/Ericthegoatskr/AquaSync" target="_blank" rel="noopener" data-hover>
+          <span lang="zh-Hant">看原始碼</span><span lang="en">View source</span>
+          <i aria-hidden="true">↗</i>
+        </a>
+      </article>
+
+      <article class="project" data-reveal>
+        <div class="project__head">
+          <span class="project__no" aria-hidden="true">03</span>
+          <span class="project__date">2025.05</span>
+        </div>
+        <h3 class="project__title">
+          <span lang="zh-Hant">NBA 數據分析</span>
+          <span lang="en">NBA Data Analysis</span>
+        </h3>
+        <div class="project__desc">
+          <p lang="zh-Hant">
+            從爬蟲到儀表板的完整資料流程。自己寫的 Python 爬蟲串接 NBA Stats API，
+            自動收集比賽與球員資料；再用 Pandas 與 NumPy 做資料清理，
+            並計算 PER、TS% 等進階數據。
+          </p>
+          <p lang="en">
+            An end-to-end pipeline from scraping to dashboard. Custom Python scrapers for
+            the NBA Stats API automatically collect game and player data, then Pandas and
+            NumPy handle cleaning and advanced metrics such as PER and TS%.
+          </p>
+        </div>
+        <ul class="project__tags"><li>Python</li><li>Pandas</li><li>NumPy</li></ul>
+        <a class="project__link" href="https://github.com/Ericthegoatskr/NBA-Data-Analysis" target="_blank" rel="noopener" data-hover>
+          <span lang="zh-Hant">看原始碼</span><span lang="en">View source</span>
+          <i aria-hidden="true">↗</i>
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section class="section section--alt" id="skills">
+    <div class="section__head">
+      <span class="tag" data-reveal>04 — SKILLS</span>
+      <h2 class="h2"><span class="line"><span data-split data-zh="專業技能" data-en="Skills">專業技能</span></span></h2>
     </div>
 
     <div class="skills">
       <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>程式與演算法</h3>
+          <h3><span lang="zh-Hant">程式與演算法</span><span lang="en">Programming &amp; Algorithms</span></h3>
           <span class="skill__badge">TOP SKILL</span>
         </div>
-        <p class="skill__desc">寫得出來，也講得清楚為什麼這樣寫。</p>
+        <p class="skill__desc">
+          <span lang="zh-Hant">寫得出來，也講得清楚為什麼這樣寫。</span>
+          <span lang="en">I can write it, and explain why it's written that way.</span>
+        </p>
         <ul class="skill__tags"><li>Java</li><li>Python</li><li>Algorithms</li></ul>
       </div>
 
       <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>資料庫</h3>
+          <h3><span lang="zh-Hant">資料庫</span><span lang="en">Databases</span></h3>
           <span class="skill__badge">TOP SKILL</span>
         </div>
-        <p class="skill__desc">資料庫的建置、查詢與日常維運。</p>
-        <ul class="skill__tags"><li>Microsoft SQL Server</li><li>資料庫設計</li><li>資料標註</li></ul>
+        <p class="skill__desc">
+          <span lang="zh-Hant">資料庫的建置、查詢與日常維運。</span>
+          <span lang="en">Building, querying and maintaining databases day to day.</span>
+        </p>
+        <ul class="skill__tags">
+          <li>Microsoft SQL Server</li>
+          <li><span lang="zh-Hant">資料庫設計</span><span lang="en">Database Design</span></li>
+          <li><span lang="zh-Hant">資料標註</span><span lang="en">Data Annotation</span></li>
+        </ul>
       </div>
 
       <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>網頁與系統</h3>
+          <h3><span lang="zh-Hant">網頁與系統</span><span lang="en">Web &amp; Systems</span></h3>
         </div>
-        <p class="skill__desc">從前端畫面到後端服務，再到系統跑在哪裡。</p>
+        <p class="skill__desc">
+          <span lang="zh-Hant">從前端畫面到後端服務，再到系統跑在哪裡。</span>
+          <span lang="en">From the front-end screen to the back-end service to where it runs.</span>
+        </p>
         <ul class="skill__tags"><li>ASP.NET</li><li>HTML</li><li>JavaScript</li><li>Linux</li></ul>
       </div>
 
       <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>AI 與電腦視覺</h3>
+          <h3><span lang="zh-Hant">AI 與電腦視覺</span><span lang="en">AI &amp; Computer Vision</span></h3>
         </div>
-        <p class="skill__desc">把影像辨識模型實際放進工作現場用。</p>
-        <ul class="skill__tags"><li>YOLO</li><li>TensorRT</li><li>PPE 辨識模型</li><li>資料前處理</li></ul>
+        <p class="skill__desc">
+          <span lang="zh-Hant">把影像辨識模型實際放進工作現場用。</span>
+          <span lang="en">Putting vision models to work on an actual factory floor.</span>
+        </p>
+        <ul class="skill__tags">
+          <li>YOLO</li><li>TensorRT</li>
+          <li><span lang="zh-Hant">PPE 辨識模型</span><span lang="en">PPE Recognition Models</span></li>
+          <li><span lang="zh-Hant">資料前處理</span><span lang="en">Data Preprocessing</span></li>
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- ===================== EDUCATION ===================== -->
-  <section class="section section--alt" id="education">
+  <section class="section" id="education">
     <div class="section__head">
-      <span class="tag" data-reveal>04 — EDUCATION</span>
-      <h2 class="h2"><span class="line"><span data-split>學歷與證照</span></span></h2>
+      <span class="tag" data-reveal>05 — EDUCATION</span>
+      <h2 class="h2"><span class="line"><span data-split data-zh="學歷與證照" data-en="Education">學歷與證照</span></span></h2>
     </div>
 
     <div class="edu">
       <div class="edu__col">
-        <h3 class="edu__label" data-reveal>學歷</h3>
+        <h3 class="edu__label" data-reveal><span lang="zh-Hant">學歷</span><span lang="en">Education</span></h3>
         <ul>
           <li class="edu__item" data-reveal>
             <div class="edu__when">2026.03 — 2027.12</div>
             <div class="edu__body">
-              <h4>蒙納許大學 Monash University</h4>
-              <p>Master of Information Technology　資訊科技碩士</p>
+              <h4><span lang="zh-Hant">蒙納許大學 Monash University</span><span lang="en">Monash University</span></h4>
+              <p>
+                <span lang="zh-Hant">Master of Information Technology　資訊科技碩士</span>
+                <span lang="en">Master of Information Technology</span>
+              </p>
               <span class="edu__place">Melbourne, Victoria, Australia</span>
             </div>
           </li>
           <li class="edu__item" data-reveal>
             <div class="edu__when">2020.09 — 2024.06</div>
             <div class="edu__body">
-              <h4>義守大學 I-Shou University</h4>
-              <p>Bachelor of Science, Computer Science and Information Engineering　資訊工程學系</p>
-              <span class="edu__place">高雄, 台灣</span>
+              <h4><span lang="zh-Hant">義守大學 I-Shou University</span><span lang="en">I-Shou University</span></h4>
+              <p>
+                <span lang="zh-Hant">Bachelor of Science, Computer Science and Information Engineering　資訊工程學系</span>
+                <span lang="en">Bachelor of Science, Computer Science and Information Engineering</span>
+              </p>
+              <span class="edu__place">
+                <span lang="zh-Hant">高雄, 台灣</span><span lang="en">Kaohsiung, Taiwan</span>
+              </span>
             </div>
           </li>
         </ul>
       </div>
 
       <div class="edu__col">
-        <h3 class="edu__label" data-reveal>證照與進修</h3>
+        <h3 class="edu__label" data-reveal>
+          <span lang="zh-Hant">證照與進修</span><span lang="en">Certifications</span>
+        </h3>
         <ul class="certs">
           <li data-reveal>2025 Code in Place Certificate</li>
           <li data-reveal>Continuing and Professional Education — International and Access Programs</li>
@@ -314,20 +559,28 @@
           <li data-reveal>Career Essentials in Generative AI by Microsoft and LinkedIn</li>
         </ul>
 
-        <h3 class="edu__label edu__label--sp" data-reveal>語言</h3>
+        <h3 class="edu__label edu__label--sp" data-reveal>
+          <span lang="zh-Hant">語言</span><span lang="en">Languages</span>
+        </h3>
         <ul class="langs">
-          <li data-reveal><b>中文</b><span>母語</span></li>
-          <li data-reveal><b>English</b><span>Full Professional Proficiency</span></li>
+          <li data-reveal>
+            <b><span lang="zh-Hant">中文</span><span lang="en">Chinese</span></b>
+            <span><span lang="zh-Hant">母語</span><span lang="en">Native or Bilingual</span></span>
+          </li>
+          <li data-reveal>
+            <b>English</b>
+            <span><span lang="zh-Hant">專業工作能力</span><span lang="en">Full Professional Proficiency</span></span>
+          </li>
         </ul>
       </div>
     </div>
   </section>
 
   <!-- ===================== CONTACT ===================== -->
-  <section class="section" id="contact">
+  <section class="section section--alt" id="contact">
     <div class="section__head">
-      <span class="tag" data-reveal>05 — CONTACT</span>
-      <h2 class="h2"><span class="line"><span data-split>聯絡我</span></span></h2>
+      <span class="tag" data-reveal>06 — CONTACT</span>
+      <h2 class="h2"><span class="line"><span data-split data-zh="聯絡我" data-en="Contact">聯絡我</span></span></h2>
     </div>
 
     <div class="contact">
@@ -344,9 +597,13 @@
           <span class="contact__k">GITHUB</span>
           <span class="contact__v">@Ericthegoatskr</span>
         </a>
-        <!-- 這是台灣的號碼，人在澳洲的話記得確認還通不通 -->
+        <!-- 兩支號碼都保留：澳洲在前（目前所在地），台灣在後 -->
+        <a class="contact__row" href="tel:+61413401385" data-reveal data-hover>
+          <span class="contact__k">PHONE · AU</span>
+          <span class="contact__v">+61 413 401 385</span>
+        </a>
         <a class="contact__row" href="tel:+886978686026" data-reveal data-hover>
-          <span class="contact__k">PHONE</span>
+          <span class="contact__k">PHONE · TW</span>
           <span class="contact__v">+886 978 686 026</span>
         </a>
         <div class="contact__row contact__row--static" data-reveal>
@@ -355,9 +612,14 @@
         </div>
 
         <div class="contact__note" data-reveal>
-          <p class="contact__note-title"><span class="dot" aria-hidden="true"></span>目前開放實習與工作機會</p>
+          <p class="contact__note-title">
+            <span class="dot" aria-hidden="true"></span>
+            <span lang="zh-Hant">目前開放實習與工作機會</span>
+            <span lang="en">Open to internships and job opportunities</span>
+          </p>
           <p class="contact__note-text">
-            對 IT 專案管理、軟體開發或資料相關的職位都有興趣，歡迎直接寄信給我。
+            <span lang="zh-Hant">對 IT 專案管理、軟體開發或資料相關的職位都有興趣，歡迎直接寄信給我。</span>
+            <span lang="en">I'm interested in roles across IT project management, software development and data. Feel free to email me directly.</span>
           </p>
         </div>
       </div>
@@ -366,18 +628,18 @@
       <form class="form" id="contactForm" novalidate data-reveal>
         <div class="field">
           <input type="text" id="name" name="name" required placeholder=" " autocomplete="name">
-          <label for="name">你的名字</label>
+          <label for="name"><span lang="zh-Hant">你的名字</span><span lang="en">Your name</span></label>
         </div>
         <div class="field">
           <input type="email" id="email" name="email" required placeholder=" " autocomplete="email">
-          <label for="email">你的電子郵件</label>
+          <label for="email"><span lang="zh-Hant">你的電子郵件</span><span lang="en">Your email</span></label>
         </div>
         <div class="field">
           <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
-          <label for="message">想說的話</label>
+          <label for="message"><span lang="zh-Hant">想說的話</span><span lang="en">Your message</span></label>
         </div>
         <button class="btn btn--solid btn--full" type="submit" data-magnetic data-hover>
-          <span>送出訊息</span>
+          <span lang="zh-Hant">送出訊息</span><span lang="en">Send message</span>
         </button>
         <p class="form__note" id="formNote" role="status"></p>
       </form>
@@ -389,12 +651,12 @@
 <footer class="footer">
   <div class="footer__big" aria-hidden="true">LET'S TALK</div>
   <div class="footer__bar">
-    <p>© <span id="year">2026</span> 蔡承諺 Cheng-Yen Tsai</p>
+    <p>© <span id="year">2026</span> <span lang="zh-Hant">蔡承諺 Cheng-Yen Tsai</span><span lang="en">Cheng-Yen Tsai</span></p>
     <ul class="footer__links">
       <li><a href="mailto:tsaieric15@gmail.com" data-hover>Email</a></li>
       <li><a href="https://www.linkedin.com/in/ericthegoat" target="_blank" rel="noopener" data-hover>LinkedIn</a></li>
       <li><a href="https://github.com/Ericthegoatskr" target="_blank" rel="noopener" data-hover>GitHub</a></li>
-      <li><a href="#top" data-hover>回到頂端</a></li>
+      <li><a href="#top" data-hover><span lang="zh-Hant">回到頂端</span><span lang="en">Back to top</span></a></li>
     </ul>
   </div>
 </footer>

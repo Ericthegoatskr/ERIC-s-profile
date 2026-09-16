@@ -123,6 +123,10 @@
   function introHero() {
     if (window.EricGL) window.EricGL.start();
 
+    // 導覽列滑下來。放在最前面，就算後面的動畫出問題，導覽列也一定會出現。
+    var nav = $('#nav');
+    if (nav) nav.classList.add('is-ready');
+
     var titles = $$('.hero__title [data-split]');
     titles.forEach(splitChars);
 
@@ -141,8 +145,7 @@
       .to('.hero__eyebrow', { opacity: 1, y: 0, duration: 0.8 }, 0.25)
       .to('.hero__cn',      { opacity: 1, y: 0, duration: 0.8 }, '-=0.55')
       .to('.hero__desc',    { opacity: 1, y: 0, duration: 0.8 }, '-=0.62')
-      .to('.hero__actions', { opacity: 1, y: 0, duration: 0.8 }, '-=0.6')
-      .from('.nav', { yPercent: -100, opacity: 0, duration: 0.9 }, '-=0.9');
+      .to('.hero__actions', { opacity: 1, y: 0, duration: 0.8 }, '-=0.6');
   }
 
   /* ==============================================================
@@ -371,7 +374,94 @@
   }
 
   /* ==============================================================
-     11. 聯絡表單
+     11. 中英切換
+     ---------------------------------------------------------------
+     大部分的翻譯是靠 CSS：HTML 裡兩種語言都寫好，
+     <html data-lang> 決定顯示哪一份。
+     這裡只處理三件 CSS 做不到的事：
+       a. 記住使用者的選擇
+       b. 大標題有逐字動畫，不能放兩份，所以要換字後重新拆字
+       c. 分頁標題與表單錯誤訊息
+     ============================================================== */
+  var LANG = { zh: {}, en: {} };
+  LANG.zh.title = '蔡承諺 Cheng-Yen Tsai — IT 專案管理 / 資訊科技';
+  LANG.en.title = 'Cheng-Yen Tsai — IT Project Management / Information Technology';
+  LANG.zh.required = '三個欄位都要填喔。';
+  LANG.en.required = 'Please fill in all three fields.';
+  LANG.zh.badMail  = '電子郵件的格式看起來怪怪的。';
+  LANG.en.badMail  = 'That email address doesn\'t look right.';
+  LANG.zh.sent     = '已經幫你開啟信箱程式，確認後按寄出就可以了。';
+  LANG.en.sent     = 'Your email app should be opening with the message ready to send.';
+
+  var root = document.documentElement;
+
+  function currentLang() {
+    return root.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
+  }
+
+  function t(key) { return LANG[currentLang()][key]; }
+
+  // 大標題換成該語言的文字。
+  // 第一次載入時只換字（等一下 initReveals 會負責拆字並做動畫）；
+  // 之後手動切換語言時，換完字要自己重新拆一次。
+  function retitleHeadings(alsoSplit) {
+    var en = currentLang() === 'en';
+    $$('.h2 [data-split]').forEach(function (el) {
+      var zhText = el.getAttribute('data-zh');
+      var enText = el.getAttribute('data-en');
+      if (!zhText && !enText) return;
+      el.textContent = en ? (enText || zhText) : (zhText || enText);
+      if (alsoSplit) splitChars(el);
+    });
+  }
+
+  function setLang(lang, isInitial) {
+    root.setAttribute('data-lang', lang);
+    root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+
+    document.title = LANG[lang].title;
+
+    $$('.langsw button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-setlang') === lang));
+    });
+
+    if (isInitial) {
+      // 只換字，拆字交給 initReveals，避免同一段文字被拆兩次
+      retitleHeadings(false);
+      return;
+    }
+
+    // 切換之後版面長度會變，要叫 ScrollTrigger 重新量一次
+    retitleHeadings(true);
+    if (hasST) ScrollTrigger.refresh();
+
+    // 保險：切換後如果有區塊還是透明的（動畫在它被隱藏時跑掉了），直接顯示
+    $$('[data-reveal]').forEach(function (el) {
+      if (parseFloat(getComputedStyle(el).opacity) < 0.9) {
+        gsapSet(el);
+      }
+    });
+  }
+
+  function gsapSet(el) {
+    if (hasGSAP) gsap.set(el, { opacity: 1, y: 0 });
+    else { el.style.opacity = 1; el.style.transform = 'none'; }
+  }
+
+  function initLang() {
+    setLang(currentLang(), true);
+    $$('.langsw button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var next = b.getAttribute('data-setlang');
+        if (next === currentLang()) return;
+        setLang(next, false);
+      });
+    });
+  }
+
+  /* ==============================================================
+     12. 聯絡表單
      這是純靜態網站，沒有伺服器可以幫忙寄信，
      所以按下送出會把內容組成一封信，直接打開你電腦的信箱程式。
      ============================================================== */
@@ -392,28 +482,31 @@
         note.className = 'form__note is-error';
       }
 
-      if (!name || !mail || !msg) return fail('三個欄位都要填喔。');
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) return fail('電子郵件的格式看起來怪怪的。');
+      if (!name || !mail || !msg) return fail(t('required'));
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) return fail(t('badMail'));
 
-      var subject = '來自個人網站的訊息 — ' + name;
-      var body = '姓名：' + name + '\n電子郵件：' + mail + '\n\n' + msg;
+      var en = currentLang() === 'en';
+      var subject = (en ? 'Message from your portfolio — ' : '來自個人網站的訊息 — ') + name;
+      var body = (en ? 'Name: ' : '姓名：') + name
+               + (en ? '\nEmail: ' : '\n電子郵件：') + mail + '\n\n' + msg;
 
       window.location.href = 'mailto:tsaieric15@gmail.com'
         + '?subject=' + encodeURIComponent(subject)
         + '&body='    + encodeURIComponent(body);
 
-      note.textContent = '已經幫你開啟信箱程式，確認後按寄出就可以了。';
+      note.textContent = t('sent');
       note.className = 'form__note is-ok';
     });
   }
 
   /* ==============================================================
-     12. 啟動
+     13. 啟動
      ============================================================== */
   function boot() {
     var y = $('#year');
     if (y) y.textContent = new Date().getFullYear();
 
+    initLang();
     initScroll();
     initNav();
     initCursor();
