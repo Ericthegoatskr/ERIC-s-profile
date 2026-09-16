@@ -836,6 +836,14 @@ html:not(.js) .marquee__track { animation: marqueeCss 26s linear infinite; }
   color: var(--ink-dim);
 }
 
+.project__links {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+}
+
 .project__link {
   position: relative;
   display: inline-flex;
@@ -853,6 +861,20 @@ html:not(.js) .marquee__track { animation: marqueeCss 26s linear infinite; }
   color: var(--accent);
   border-bottom-color: var(--accent);
   gap: 12px;
+}
+
+/* 有線上 demo 的話，那顆才是主角，用強調色先抓住視線 */
+.project__link--demo {
+  color: var(--accent);
+  border-bottom-color: rgba(255, 174, 59, .5);
+}
+.project__link--demo::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
 }
 
 /* ---------- 14. SKILLS ---------- */
