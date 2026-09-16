@@ -22,16 +22,16 @@
 <link rel="stylesheet" href="assets/css/style.css">
 
 <script>
-/* 在畫面畫出來之前就決定語言，避免先閃一下中文再跳成英文。
-   順序：使用者上次選的 → 瀏覽器語言 → 英文 */
+/* 在畫面畫出來之前就決定語言，避免先閃一下再跳成另一種。
+
+   規則：預設一律英文。只有「這個訪客自己按過切換鈕」才會記住他選的，
+   下次再來就直接給他那一種。第一次進來的人一定看到英文。 */
 (function () {
   var d = document.documentElement;
   d.classList.add('js');
   var saved = null;
   try { saved = localStorage.getItem('lang'); } catch (e) {}
-  var lang = (saved === 'zh' || saved === 'en')
-    ? saved
-    : (/^zh/i.test(navigator.language || '') ? 'zh' : 'en');
+  var lang = (saved === 'zh' || saved === 'en') ? saved : 'en';
   d.setAttribute('data-lang', lang);
   d.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
 })();
