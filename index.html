@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>蔡承諺 Eric Tsai — 資訊工程 / 數據應用</title>
-<meta name="description" content="蔡承諺 Eric Tsai 的個人作品集。義守大學資訊工程學系，專注於資料庫、Python 與數據應用。">
+<title>蔡承諺 Cheng-Yen Tsai — IT 專案管理 / 資訊科技</title>
+<meta name="description" content="蔡承諺 Cheng-Yen Tsai 的個人作品集。蒙納許大學資訊科技碩士在讀，具備全端開發、資料庫與 AI 專案實作經驗，目標為 IT 專案管理。">
 <meta name="theme-color" content="#08080a">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="蔡承諺 Eric Tsai — 資訊工程 / 數據應用">
-<meta property="og:description" content="義守大學資訊工程學系，專注於資料庫、Python 與數據應用。">
+<meta property="og:title" content="蔡承諺 Cheng-Yen Tsai — IT 專案管理 / 資訊科技">
+<meta property="og:description" content="蒙納許大學資訊科技碩士在讀，具備全端開發、資料庫與 AI 專案實作經驗。">
 <meta property="og:locale" content="zh_TW">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2308080a'/><text y='.9em' x='50%25' text-anchor='middle' font-size='62' font-family='sans-serif' font-weight='bold' fill='%23ffae3b'>E</text></svg>">
@@ -30,7 +30,7 @@
 <!-- ===== 開場載入畫面 ===== -->
 <div class="loader" id="loader" aria-hidden="true">
   <div class="loader__inner">
-    <span class="loader__label">ERIC TSAI</span>
+    <span class="loader__label">CHENG-YEN TSAI</span>
     <span class="loader__count" id="loaderCount">00</span>
   </div>
   <div class="loader__bar"><i id="loaderBar"></i></div>
@@ -56,10 +56,11 @@
   </a>
 
   <nav class="nav__links" id="navLinks" aria-label="主選單">
-    <a href="#about"   data-hover><span>關於</span></a>
-    <a href="#work"    data-hover><span>經歷</span></a>
-    <a href="#skills"  data-hover><span>技能</span></a>
-    <a href="#contact" data-hover><span>聯絡</span></a>
+    <a href="#about"     data-hover><span>關於</span></a>
+    <a href="#work"      data-hover><span>經歷</span></a>
+    <a href="#skills"    data-hover><span>技能</span></a>
+    <a href="#education" data-hover><span>學歷</span></a>
+    <a href="#contact"   data-hover><span>聯絡</span></a>
   </nav>
 
   <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="開啟選單">
@@ -77,7 +78,7 @@
     <div class="hero__inner">
       <p class="hero__eyebrow" data-reveal>
         <span class="dot" aria-hidden="true"></span>
-        資訊工程 · 數據應用 · Taipei, Taiwan
+        Monash IT Postgrad · Melbourne, Australia
       </p>
 
       <h1 class="hero__title">
@@ -88,8 +89,8 @@
       <div class="hero__meta">
         <p class="hero__cn" data-reveal>蔡承諺</p>
         <p class="hero__desc" data-reveal>
-          我把雜亂的資料，整理成可以拿來做決定的東西。<br>
-          從資料庫到 Python，從數字到答案。
+          我正在從工程端往專案管理端走。<br>
+          把技術團隊和業務單位之間的落差補起來，是我想做的事。
         </p>
       </div>
 
@@ -112,9 +113,9 @@
   <!-- ===================== 跑馬燈 ===================== -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee__track" id="marqueeTrack">
-      <span>DATABASE ✦ PYTHON ✦ SQL ✦ 數據應用 ✦ 資料分析 ✦ 自動化 ✦</span>
-      <span>DATABASE ✦ PYTHON ✦ SQL ✦ 數據應用 ✦ 資料分析 ✦ 自動化 ✦</span>
-      <span>DATABASE ✦ PYTHON ✦ SQL ✦ 數據應用 ✦ 資料分析 ✦ 自動化 ✦</span>
+      <span>JAVA ✦ PYTHON ✦ DATABASES ✦ ALGORITHMS ✦ PROJECT MANAGEMENT ✦ AI ✦</span>
+      <span>JAVA ✦ PYTHON ✦ DATABASES ✦ ALGORITHMS ✦ PROJECT MANAGEMENT ✦ AI ✦</span>
+      <span>JAVA ✦ PYTHON ✦ DATABASES ✦ ALGORITHMS ✦ PROJECT MANAGEMENT ✦ AI ✦</span>
     </div>
   </div>
 
@@ -127,33 +128,40 @@
 
     <div class="about">
       <div class="about__text">
-        <!-- 這段自我介紹可以自己改成你想說的話 -->
+        <!-- 這段自我介紹來自 LinkedIn 的 Summary，可以自己再調整語氣 -->
         <p class="lead" data-reveal>
-          我是蔡承諺，2024 年畢業於義守大學資訊工程學系。
+          我是蔡承諺（Cheng-Yen Tsai），目前在澳洲蒙納許大學就讀資訊科技碩士，
+          目標是成為 IT 專案經理。
         </p>
         <p data-reveal>
-          我喜歡處理「看起來很亂」的問題。資料散在不同地方、格式都不一樣、
-          每次要用都要重做一次 — 這種事情我會想辦法把它變成一條穩定的流程。
+          我的底子是資訊工程。在台聚集團（USI Corporation）擔任 IT 實習生的一年八個月裡，
+          我參與了 AI 與網頁開發專案從頭到尾的執行，其中包括一套使用 YOLO 與 TensorRT
+          的工業安全監控系統。
         </p>
         <p data-reveal>
-          目前在台聚集團資訊處數據應用部，日常圍繞著資料庫查詢、資料清理與分析。
-          工作之外，我當過籃球教練，也在中華職棒的賽事現場待過，
-          那些經驗讓我習慣在很吵的環境裡，把事情講清楚。
+          全端開發與資料處理的實作經驗，讓我理解整個軟體開發生命週期（SDLC），
+          也能直接和工程團隊討論專案範圍與技術需求，而不是只能轉述。
+        </p>
+        <p data-reveal>
+          技術之外，中華職棒的賽事現場工作和兒童籃球教練的經驗，讓我習慣在快節奏、
+          人很多的環境裡協調不同單位、預先控制風險、把一群人凝聚起來。
+          另外在全國性數位教育計畫的教學經驗，以及在加州大學戴維斯分校（UC Davis）的學習，
+          訓練我把複雜的技術概念講給沒有技術背景的人聽。
         </p>
       </div>
 
       <aside class="about__facts">
         <div class="fact" data-reveal>
-          <b class="fact__num" data-count="2024">2024</b>
-          <span class="fact__label">畢業於義守大學<br>資訊工程學系</span>
+          <b class="fact__num" data-count="2027">2027</b>
+          <span class="fact__label">蒙納許大學 資訊科技碩士<br>預計畢業</span>
+        </div>
+        <div class="fact" data-reveal>
+          <b class="fact__num" data-count="20">20</b>
+          <span class="fact__label">個月<br>台聚集團 IT 實習經驗</span>
         </div>
         <div class="fact" data-reveal>
           <b class="fact__num" data-count="3">3</b>
-          <span class="fact__label">段工作與實務經歷</span>
-        </div>
-        <div class="fact" data-reveal>
-          <b class="fact__num" data-count="2">2</b>
-          <span class="fact__label">主力技術方向<br>Database / Python</span>
+          <span class="fact__label">年<br>中華職棒賽事現場經驗</span>
         </div>
       </aside>
     </div>
@@ -169,45 +177,52 @@
     <!-- 每一個 .job 就是一段經歷，可以複製整塊來新增 -->
     <ol class="jobs">
       <li class="job" data-reveal>
-        <div class="job__when">現職</div>
+        <div class="job__when">2024.01 — 2025.08<br><small>1 年 8 個月</small></div>
         <div class="job__body">
-          <h3 class="job__title">台聚集團 — 資訊處 數據應用部</h3>
-          <p class="job__role">數據應用</p>
-          <p class="job__desc">
-            負責資料的取得、整理與分析，協助各部門把手上的數字變成能看懂的報表與結論。
-          </p>
+          <h3 class="job__title">台聚集團 USI Corporation</h3>
+          <p class="job__role">IT Intern　資訊部實習生　·　台北 內湖</p>
+          <ul class="job__points">
+            <li>使用 ASP.NET、HTML、JavaScript 開發與維護公司內部的網頁系統。</li>
+            <li>以 Python 建立 AI 解決方案，為個人防護裝備（PPE）辨識模型執行資料標註，應用於工作場所安全。</li>
+            <li>參與一套使用 YOLO 與 TensorRT 的工業安全監控系統，從概念到交付的完整執行過程。</li>
+            <li>管理 Microsoft SQL Server 資料庫，並在 Linux 環境中維護系統運作。</li>
+          </ul>
           <ul class="job__tags">
-            <li>SQL</li><li>Python</li><li>資料處理</li><li>報表</li>
+            <li>ASP.NET</li><li>JavaScript</li><li>Python</li><li>SQL Server</li><li>Linux</li><li>YOLO</li><li>TensorRT</li>
           </ul>
         </div>
         <span class="job__index" aria-hidden="true">01</span>
       </li>
 
       <li class="job" data-reveal>
-        <div class="job__when">兼職</div>
+        <div class="job__when">2022.01 — 2024.12<br><small>3 年</small></div>
         <div class="job__body">
-          <h3 class="job__title">CPBL 中華職棒</h3>
-          <p class="job__role">賽事現場工作人員</p>
-          <p class="job__desc">
-            參與職棒賽事的現場運作，在時間壓力下和不同組別協調，確保流程順利進行。
-          </p>
+          <h3 class="job__title">中華職業棒球大聯盟 CPBL</h3>
+          <p class="job__role">Event Staff　賽事現場工作人員　·　台灣</p>
+          <ul class="job__points">
+            <li>執行現場人流管制與秩序維護。</li>
+            <li>負責票務查驗與觀眾服務。</li>
+            <li>賽前器材架設與賽後撤收。</li>
+          </ul>
           <ul class="job__tags">
-            <li>現場執行</li><li>跨組協調</li><li>臨場應變</li>
+            <li>現場執行</li><li>跨組協調</li><li>顧客服務</li><li>臨場應變</li>
           </ul>
         </div>
         <span class="job__index" aria-hidden="true">02</span>
       </li>
 
       <li class="job" data-reveal>
-        <div class="job__when">兼職</div>
+        <div class="job__when">2022.11 — 2024.01<br><small>1 年 3 個月</small></div>
         <div class="job__body">
-          <h3 class="job__title">活力小猴</h3>
-          <p class="job__role">籃球教練</p>
-          <p class="job__desc">
-            帶兒童籃球課程，把動作拆成小孩聽得懂的步驟，也學會怎麼讓一群人願意一起做同一件事。
-          </p>
+          <h3 class="job__title">活力小猴籃球營 Vigor Monkey Basketball Camp</h3>
+          <p class="job__role">Youth Basketball Coach　兒童籃球教練　·　高雄</p>
+          <ul class="job__points">
+            <li>設計訓練課程與教學進度。</li>
+            <li>場上戰術指導與即時修正。</li>
+            <li>帶動球員的整體成長與團隊凝聚。</li>
+          </ul>
           <ul class="job__tags">
-            <li>教學</li><li>帶隊</li><li>溝通</li>
+            <li>教學設計</li><li>帶隊</li><li>溝通</li><li>團隊建立</li>
           </ul>
         </div>
         <span class="job__index" aria-hidden="true">03</span>
@@ -223,49 +238,95 @@
     </div>
 
     <div class="skills">
-      <!-- data-level 是熟練度百分比，自己調整就會跟著動 -->
-      <div class="skill" data-reveal data-level="85" style="--lvl: 85%">
+      <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>Database / SQL</h3>
-          <span class="skill__pct">85</span>
+          <h3>程式與演算法</h3>
+          <span class="skill__badge">TOP SKILL</span>
         </div>
-        <p class="skill__desc">資料庫查詢、資料表設計、清理與整併不同來源的資料。</p>
-        <div class="skill__bar"><i></i></div>
+        <p class="skill__desc">寫得出來，也講得清楚為什麼這樣寫。</p>
+        <ul class="skill__tags"><li>Java</li><li>Python</li><li>Algorithms</li></ul>
       </div>
 
-      <div class="skill" data-reveal data-level="80" style="--lvl: 80%">
+      <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>Python</h3>
-          <span class="skill__pct">80</span>
+          <h3>資料庫</h3>
+          <span class="skill__badge">TOP SKILL</span>
         </div>
-        <p class="skill__desc">資料處理與分析、重複性工作自動化、串接資料來源。</p>
-        <div class="skill__bar"><i></i></div>
+        <p class="skill__desc">資料庫的建置、查詢與日常維運。</p>
+        <ul class="skill__tags"><li>Microsoft SQL Server</li><li>資料庫設計</li><li>資料標註</li></ul>
       </div>
 
-      <div class="skill" data-reveal data-level="70" style="--lvl: 70%">
+      <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>資料分析與報表</h3>
-          <span class="skill__pct">70</span>
+          <h3>網頁與系統</h3>
         </div>
-        <p class="skill__desc">把分析結果整理成別人看得懂、可以直接拿去用的內容。</p>
-        <div class="skill__bar"><i></i></div>
+        <p class="skill__desc">從前端畫面到後端服務，再到系統跑在哪裡。</p>
+        <ul class="skill__tags"><li>ASP.NET</li><li>HTML</li><li>JavaScript</li><li>Linux</li></ul>
       </div>
 
-      <div class="skill" data-reveal data-level="65" style="--lvl: 65%">
+      <div class="skill" data-reveal>
         <div class="skill__top">
-          <h3>網頁基礎</h3>
-          <span class="skill__pct">65</span>
+          <h3>AI 與電腦視覺</h3>
         </div>
-        <p class="skill__desc">HTML / CSS / JavaScript，做得出可以互動的前端頁面。</p>
-        <div class="skill__bar"><i></i></div>
+        <p class="skill__desc">把影像辨識模型實際放進工作現場用。</p>
+        <ul class="skill__tags"><li>YOLO</li><li>TensorRT</li><li>PPE 辨識模型</li><li>資料前處理</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EDUCATION ===================== -->
+  <section class="section section--alt" id="education">
+    <div class="section__head">
+      <span class="tag" data-reveal>04 — EDUCATION</span>
+      <h2 class="h2"><span class="line"><span data-split>學歷與證照</span></span></h2>
+    </div>
+
+    <div class="edu">
+      <div class="edu__col">
+        <h3 class="edu__label" data-reveal>學歷</h3>
+        <ul>
+          <li class="edu__item" data-reveal>
+            <div class="edu__when">2026.03 — 2027.12</div>
+            <div class="edu__body">
+              <h4>蒙納許大學 Monash University</h4>
+              <p>Master of Information Technology　資訊科技碩士</p>
+              <span class="edu__place">Melbourne, Victoria, Australia</span>
+            </div>
+          </li>
+          <li class="edu__item" data-reveal>
+            <div class="edu__when">2020.09 — 2024.06</div>
+            <div class="edu__body">
+              <h4>義守大學 I-Shou University</h4>
+              <p>Bachelor of Science, Computer Science and Information Engineering　資訊工程學系</p>
+              <span class="edu__place">高雄, 台灣</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="edu__col">
+        <h3 class="edu__label" data-reveal>證照與進修</h3>
+        <ul class="certs">
+          <li data-reveal>2025 Code in Place Certificate</li>
+          <li data-reveal>Continuing and Professional Education — International and Access Programs</li>
+          <li data-reveal>Databases</li>
+          <li data-reveal>Managing Projects with Microsoft 365</li>
+          <li data-reveal>Career Essentials in Generative AI by Microsoft and LinkedIn</li>
+        </ul>
+
+        <h3 class="edu__label edu__label--sp" data-reveal>語言</h3>
+        <ul class="langs">
+          <li data-reveal><b>中文</b><span>母語</span></li>
+          <li data-reveal><b>English</b><span>Full Professional Proficiency</span></li>
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- ===================== CONTACT ===================== -->
-  <section class="section section--alt" id="contact">
+  <section class="section" id="contact">
     <div class="section__head">
-      <span class="tag" data-reveal>04 — CONTACT</span>
+      <span class="tag" data-reveal>05 — CONTACT</span>
       <h2 class="h2"><span class="line"><span data-split>聯絡我</span></span></h2>
     </div>
 
@@ -275,19 +336,28 @@
           <span class="contact__k">EMAIL</span>
           <span class="contact__v">tsaieric15@gmail.com</span>
         </a>
+        <a class="contact__row" href="https://www.linkedin.com/in/ericthegoat" target="_blank" rel="noopener" data-reveal data-hover>
+          <span class="contact__k">LINKEDIN</span>
+          <span class="contact__v">in/ericthegoat</span>
+        </a>
+        <a class="contact__row" href="https://github.com/Ericthegoatskr" target="_blank" rel="noopener" data-reveal data-hover>
+          <span class="contact__k">GITHUB</span>
+          <span class="contact__v">@Ericthegoatskr</span>
+        </a>
+        <!-- 這是台灣的號碼，人在澳洲的話記得確認還通不通 -->
         <a class="contact__row" href="tel:+886978686026" data-reveal data-hover>
           <span class="contact__k">PHONE</span>
-          <span class="contact__v">0978 686 026</span>
+          <span class="contact__v">+886 978 686 026</span>
         </a>
         <div class="contact__row contact__row--static" data-reveal>
           <span class="contact__k">BASED IN</span>
-          <span class="contact__v">台北市內湖區</span>
+          <span class="contact__v">Melbourne, Victoria, Australia</span>
         </div>
 
         <div class="contact__note" data-reveal>
-          <p class="contact__note-title"><span class="dot" aria-hidden="true"></span>目前開放合作與工作機會</p>
+          <p class="contact__note-title"><span class="dot" aria-hidden="true"></span>目前開放實習與工作機會</p>
           <p class="contact__note-text">
-            專案合作、職缺邀約，或只是想聊聊資料要怎麼整理，都歡迎直接寄信給我。
+            對 IT 專案管理、軟體開發或資料相關的職位都有興趣，歡迎直接寄信給我。
           </p>
         </div>
       </div>
@@ -319,10 +389,11 @@
 <footer class="footer">
   <div class="footer__big" aria-hidden="true">LET'S TALK</div>
   <div class="footer__bar">
-    <p>© <span id="year">2026</span> 蔡承諺 Eric Tsai</p>
+    <p>© <span id="year">2026</span> 蔡承諺 Cheng-Yen Tsai</p>
     <ul class="footer__links">
       <li><a href="mailto:tsaieric15@gmail.com" data-hover>Email</a></li>
-      <li><a href="https://github.com/ericthegoatskr" target="_blank" rel="noopener" data-hover>GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/ericthegoat" target="_blank" rel="noopener" data-hover>LinkedIn</a></li>
+      <li><a href="https://github.com/Ericthegoatskr" target="_blank" rel="noopener" data-hover>GitHub</a></li>
       <li><a href="#top" data-hover>回到頂端</a></li>
     </ul>
   </div>

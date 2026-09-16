@@ -180,7 +180,7 @@
   }
 
   /* ==============================================================
-     6. 數字往上跳 + 技能長條
+     6. 數字往上跳（關於我那三張卡片）
      ============================================================== */
   function initCounters() {
     $$('[data-count]').forEach(function (el) {
@@ -195,33 +195,6 @@
         ease: 'power2.out',
         scrollTrigger: { trigger: el, start: 'top 90%', once: true },
         onUpdate: function () { el.textContent = Math.round(o.v); }
-      });
-    });
-
-    $$('.skill').forEach(function (card) {
-      var lvl  = parseFloat(card.getAttribute('data-level')) || 0;
-      var fill = $('.skill__bar i', card);
-      var pct  = $('.skill__pct', card);
-      if (!fill) return;
-
-      fill.style.setProperty('--lvl', lvl + '%');
-
-      if (!hasST || reduce) {
-        fill.style.width = lvl + '%';
-        if (pct) pct.textContent = lvl;
-        return;
-      }
-
-      var o = { v: 0 };
-      gsap.to(o, {
-        v: lvl,
-        duration: 1.4,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: card, start: 'top 85%', once: true },
-        onUpdate: function () {
-          fill.style.width = o.v + '%';
-          if (pct) pct.textContent = Math.round(o.v);
-        }
       });
     });
   }
