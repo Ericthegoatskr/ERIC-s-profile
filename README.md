@@ -43,12 +43,20 @@ python3 -m http.server 8000
 
 ## 部署
 
-已經設定成**自動部署**。只要有東西推上 `main`，
-`.github/workflows/deploy-pages.yml` 就會自動把整個網站發佈到 GitHub Pages，
-不需要手動去點任何設定。
+### 只需要做一次的設定
 
-進度可以在 Repository 的 Actions 分頁看；想手動重跑一次，
-到 Actions → Deploy to GitHub Pages → Run workflow。
+到 Repository 的 **Settings → Pages**，把 **Source** 選成 **`GitHub Actions`**
+（不是 `Deploy from a branch`），這樣就好，不用選分支也不用按儲存。
+
+### 之後
+
+設定完以後就全自動了。只要有東西推上 `main`，
+`.github/workflows/deploy-pages.yml` 就會把整個網站重新發佈一次。
+
+進度在 Repository 的 **Actions** 分頁可以看。
+想手動重跑一次：Actions → Deploy to GitHub Pages → Run workflow。
+
+網址會是 `https://ericthegoatskr.github.io/ERIC-s-profile/`。
 
 ## 無障礙與相容性
 

@@ -26,10 +26,10 @@ jobs:
       - name: 取得原始碼
         uses: actions/checkout@v4
 
-      - name: 設定 Pages（第一次會自動幫忙開啟）
+      # 注意：第一次使用前，要先到 Settings -> Pages，
+      # 把 Source 設成「GitHub Actions」。這個開關只需要設定一次。
+      - name: 設定 Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: 打包整個網站
         uses: actions/upload-pages-artifact@v3
