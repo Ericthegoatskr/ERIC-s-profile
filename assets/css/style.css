@@ -1,0 +1,895 @@
+/* =========================================================
+   蔡承諺 Eric Tsai — Portfolio
+   設計方向：深色底 + 大字體 + 捲動動畫（參考 graffico.it 那類作品集網站）
+   ========================================================= */
+
+/* ---------- 1. 設計變數：顏色、間距都寫在這裡，改一次全站都會變 ---------- */
+:root {
+  --bg:        #08080a;
+  --bg-soft:   #0e0e12;
+  --bg-card:   #131319;
+  --line:      rgba(255, 255, 255, .10);
+  --ink:       #f3f1ec;
+  --ink-dim:   rgba(243, 241, 236, .62);
+  --ink-faint: rgba(243, 241, 236, .38);
+  --accent:    #ffae3b;
+  --accent-2:  #6d4cfb;
+
+  --max: 1240px;
+  --gut: clamp(20px, 5vw, 80px);
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+
+/* ---------- 2. 基本重置 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+html.lenis, html.lenis body { height: auto; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body.is-locked { overflow: hidden; }
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+::selection { background: var(--accent); color: #0b0b0d; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ---------- 3. 開場載入畫面 ---------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  display: grid;
+  place-content: center;
+  gap: 22px;
+}
+/* 沒有 JS 就永遠不要蓋住畫面 */
+html:not(.js) .loader { display: none; }
+
+.loader.is-done {
+  transform: translateY(-100%);
+  transition: transform 1s var(--ease);
+}
+
+.loader__inner {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(16px, 4vw, 40px);
+}
+
+.loader__label {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: .22em;
+  font-size: clamp(13px, 1.4vw, 16px);
+  color: var(--ink-dim);
+}
+
+.loader__count {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(48px, 11vw, 120px);
+  line-height: .9;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.loader__bar {
+  width: min(58vw, 380px);
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.loader__bar i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+}
+
+/* ---------- 4. 自訂游標 ---------- */
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 190;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.cursor.is-on { opacity: 1; }
+
+.cursor__ring,
+.cursor__dot {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.cursor__ring {
+  width: 38px; height: 38px;
+  border: 1px solid rgba(255,255,255,.75);
+  transition: width .3s var(--ease), height .3s var(--ease), background-color .3s;
+}
+.cursor__dot {
+  width: 5px; height: 5px;
+  background: #fff;
+}
+.cursor.is-hover .cursor__ring {
+  width: 70px; height: 70px;
+  background: rgba(255,255,255,.14);
+}
+.cursor.is-hover .cursor__dot { opacity: 0; }
+
+/* 觸控裝置不顯示自訂游標 */
+@media (hover: none), (pointer: coarse) {
+  .cursor { display: none; }
+}
+
+/* ---------- 5. 顆粒雜訊（讓畫面不那麼「平」） ---------- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 150;
+  pointer-events: none;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 8s steps(8) infinite;
+}
+@keyframes grain {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-3%, 2%); }
+  40%  { transform: translate(2%, -3%); }
+  60%  { transform: translate(-2%, -2%); }
+  80%  { transform: translate(3%, 1%); }
+  100% { transform: translate(0,0); }
+}
+
+/* ---------- 6. 捲動進度條 ---------- */
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 120;
+  background: transparent;
+  pointer-events: none;
+}
+.progress i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+}
+
+/* ---------- 7. 導覽列 ---------- */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 130;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px var(--gut);
+  transition: background-color .4s, backdrop-filter .4s, border-color .4s, transform .5s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav.is-stuck {
+  background: rgba(8, 8, 10, .72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: var(--line);
+}
+.nav.is-hidden { transform: translateY(-100%); }
+
+.nav__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.nav__logo-mark {
+  display: grid;
+  place-content: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #0b0b0d;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 15px;
+}
+.nav__logo-text { font-size: 15px; }
+
+.nav__links { display: flex; gap: clamp(18px, 2.4vw, 34px); }
+
+.nav__links a {
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-dim);
+  padding: 4px 0;
+  transition: color .3s;
+}
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .4s var(--ease);
+}
+.nav__links a:hover,
+.nav__links a.is-active { color: var(--ink); }
+.nav__links a:hover::after,
+.nav__links a.is-active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.nav__toggle {
+  display: none;
+  width: 42px; height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  place-content: center;
+  gap: 5px;
+}
+.nav__toggle i {
+  display: block;
+  width: 17px; height: 1.5px;
+  background: var(--ink);
+  transition: transform .35s var(--ease), opacity .25s;
+}
+.nav__toggle[aria-expanded="true"] i:first-child { transform: translateY(3.25px) rotate(45deg); }
+.nav__toggle[aria-expanded="true"] i:last-child  { transform: translateY(-3.25px) rotate(-45deg); }
+
+@media (max-width: 760px) {
+  .nav__toggle { display: grid; }
+  .nav__links {
+    position: fixed;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    background: rgba(8, 8, 10, .96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    clip-path: circle(0% at calc(100% - 42px) 40px);
+    transition: clip-path .7s var(--ease);
+    pointer-events: none;
+  }
+  .nav__links.is-open {
+    clip-path: circle(150% at calc(100% - 42px) 40px);
+    pointer-events: auto;
+  }
+  .nav__links a { font-size: 26px; font-weight: 700; color: var(--ink); }
+}
+
+/* ---------- 8. HERO ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 140px var(--gut) 120px;
+  overflow: hidden;
+}
+
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* WebGL 掛掉的時候，這個漸層就是備案 */
+  background:
+    radial-gradient(60% 55% at 22% 28%, rgba(109, 76, 251, .30), transparent 70%),
+    radial-gradient(55% 50% at 78% 62%, rgba(255, 174, 59, .22), transparent 70%),
+    var(--bg);
+}
+
+.hero__fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,8,10,.55) 0%, rgba(8,8,10,.15) 42%, rgba(8,8,10,.96) 100%);
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 clamp(20px, 3vw, 34px);
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.hero__eyebrow .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(255, 174, 59, .55);
+  animation: pulse 2.4s infinite;
+}
+@keyframes pulse {
+  70%  { box-shadow: 0 0 0 12px rgba(255, 174, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 174, 59, 0); }
+}
+
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(64px, 16vw, 230px);
+  line-height: .86;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+}
+
+/* .line 是「遮罩」，字從下面滑上來時，超出的部分會被切掉 */
+.line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: .06em;
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(20px, 4vw, 60px);
+  margin-top: clamp(24px, 4vw, 44px);
+  padding-top: clamp(20px, 3vw, 30px);
+  border-top: 1px solid var(--line);
+}
+
+.hero__cn {
+  margin: 0;
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: .28em;
+}
+
+.hero__desc {
+  margin: 0;
+  max-width: 44ch;
+  color: var(--ink-dim);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(28px, 4vw, 46px);
+}
+
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: .3em;
+  color: var(--ink-faint);
+}
+.hero__scroll i {
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollCue 2s var(--ease) infinite;
+  transform-origin: top;
+}
+@keyframes scrollCue {
+  0%   { transform: scaleY(0); opacity: 0; }
+  40%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; transform-origin: bottom; }
+}
+
+/* ---------- 9. 按鈕 ---------- */
+.btn {
+  --pad: 16px 30px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pad);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  overflow: hidden;
+  isolation: isolate;
+  will-change: transform;
+}
+.btn span { position: relative; z-index: 2; }
+
+/* 滑過時，一塊顏色從下面往上填滿 */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform: translateY(101%);
+  transition: transform .5s var(--ease);
+}
+.btn:hover::before { transform: translateY(0); }
+
+.btn--solid { background: var(--accent); color: #0b0b0d; }
+.btn--solid::before { background: var(--ink); }
+.btn--solid:hover span { color: #0b0b0d; }
+
+.btn--ghost { border: 1px solid var(--line); color: var(--ink); }
+.btn--ghost::before { background: var(--ink); }
+.btn--ghost:hover span { color: #0b0b0d; }
+
+.btn--full { width: 100%; }
+
+/* ---------- 10. 跑馬燈 ---------- */
+.marquee {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  overflow: hidden;
+  padding: clamp(16px, 2.4vw, 26px) 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 40px;
+  white-space: nowrap;
+  will-change: transform;
+}
+.marquee__track span {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(24px, 4.4vw, 58px);
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(243, 241, 236, .42);
+}
+
+/* 沒有 JS 時用純 CSS 動畫，跑馬燈還是會動 */
+html:not(.js) .marquee__track { animation: marqueeCss 26s linear infinite; }
+@keyframes marqueeCss {
+  to { transform: translateX(-33.33%); }
+}
+
+/* ---------- 11. 區塊通用 ---------- */
+.section {
+  position: relative;
+  padding: clamp(90px, 13vw, 180px) var(--gut);
+}
+.section--alt { background: var(--bg-soft); }
+
+.section__head {
+  max-width: var(--max);
+  margin: 0 auto clamp(40px, 6vw, 76px);
+}
+
+.tag {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .26em;
+  color: var(--accent);
+}
+
+.h2 {
+  margin: 0;
+  font-size: clamp(38px, 7.4vw, 96px);
+  font-weight: 900;
+  line-height: 1.12;
+  /* 中文字不要用負字距，不然筆畫會疊在一起 */
+  letter-spacing: .01em;
+}
+
+/* ---------- 12. ABOUT ---------- */
+.about {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, .8fr);
+  gap: clamp(36px, 6vw, 90px);
+  align-items: start;
+}
+@media (max-width: 900px) { .about { grid-template-columns: 1fr; } }
+
+.about__text p { margin: 0 0 1.2em; color: var(--ink-dim); }
+.about__text .lead {
+  font-size: clamp(20px, 2.3vw, 30px);
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.about__facts { display: grid; gap: 14px; }
+
+.fact {
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg-card);
+  transition: border-color .4s, transform .4s var(--ease);
+}
+.fact:hover { border-color: rgba(255, 174, 59, .5); transform: translateY(-3px); }
+
+.fact__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.fact__label {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+/* ---------- 13. WORK ---------- */
+.jobs {
+  max-width: var(--max);
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+
+.job {
+  position: relative;
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) 60px;
+  gap: clamp(16px, 4vw, 48px);
+  padding: clamp(28px, 4vw, 48px) 0;
+  border-bottom: 1px solid var(--line);
+  transition: background-color .45s var(--ease);
+}
+.job::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--gut) * -1);
+  right: calc(var(--gut) * -1);
+  top: 0; bottom: 0;
+  background: linear-gradient(90deg, rgba(255,174,59,.07), transparent 60%);
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+  pointer-events: none;
+}
+.job:hover::after { opacity: 1; }
+
+@media (max-width: 760px) {
+  .job { grid-template-columns: 1fr; }
+  .job__index { display: none; }
+}
+
+.job__when {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-top: .5em;
+}
+
+.job__title {
+  margin: 0 0 6px;
+  font-size: clamp(21px, 2.7vw, 34px);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+}
+.job__role {
+  margin: 0 0 14px;
+  font-size: 14px;
+  letter-spacing: .1em;
+  color: var(--accent);
+}
+.job__desc {
+  margin: 0 0 18px;
+  max-width: 60ch;
+  color: var(--ink-dim);
+}
+
+.job__tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.job__tags li {
+  padding: 5px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+
+.job__index {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-faint);
+  text-align: right;
+  padding-top: .6em;
+}
+
+/* ---------- 14. SKILLS ---------- */
+.skills {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 34px);
+}
+@media (max-width: 700px) { .skills { grid-template-columns: 1fr; } }
+
+.skill {
+  padding: clamp(24px, 3vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--bg-card);
+  transition: border-color .4s, transform .4s var(--ease);
+}
+.skill:hover { border-color: rgba(255, 174, 59, .45); transform: translateY(-4px); }
+
+.skill__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.skill__top h3 {
+  margin: 0;
+  font-size: clamp(18px, 1.9vw, 23px);
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.skill__pct {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.skill__pct::after { content: "%"; font-size: .62em; margin-left: 1px; }
+
+.skill__desc {
+  margin: 12px 0 22px;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+
+.skill__bar {
+  height: 3px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.skill__bar i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+/* 沒有 JS 時直接把長度畫出來（用 inline style 的 --lvl） */
+html:not(.js) .skill__bar i { width: var(--lvl, 70%); }
+
+/* ---------- 15. CONTACT ---------- */
+.contact {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(36px, 6vw, 80px);
+  align-items: start;
+}
+@media (max-width: 900px) { .contact { grid-template-columns: 1fr; } }
+
+.contact__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left .45s var(--ease), border-color .45s;
+}
+.contact__row:not(.contact__row--static):hover {
+  padding-left: 14px;
+  border-bottom-color: var(--accent);
+}
+.contact__k {
+  min-width: 90px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  color: var(--ink-faint);
+}
+.contact__v {
+  font-size: clamp(17px, 2vw, 24px);
+  font-weight: 500;
+  letter-spacing: -.01em;
+  word-break: break-word;
+}
+
+.contact__note {
+  margin-top: 34px;
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg-card);
+}
+.contact__note-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.contact__note-title .dot {
+  width: 7px; height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(255, 174, 59, .55);
+  animation: pulse 2.4s infinite;
+}
+.contact__note-text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+
+/* ---------- 16. 表單（浮動標籤） ---------- */
+.form { display: grid; gap: 16px; }
+
+.field { position: relative; }
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 26px 18px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-card);
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+  transition: border-color .3s, background-color .3s;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.field input:user-invalid,
+.field textarea:user-invalid { border-color: #ff6b6b; }
+
+.field label {
+  position: absolute;
+  top: 19px;
+  left: 19px;
+  font-size: 15px;
+  color: var(--ink-faint);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform .28s var(--ease), color .28s;
+}
+/* placeholder=" " 讓 :placeholder-shown 可以判斷「有沒有輸入」 */
+.field input:focus + label,
+.field textarea:focus + label,
+.field input:not(:placeholder-shown) + label,
+.field textarea:not(:placeholder-shown) + label {
+  transform: translateY(-11px) scale(.72);
+  color: var(--accent);
+}
+
+.form__note {
+  min-height: 1.4em;
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.form__note.is-error { color: #ff8b8b; }
+.form__note.is-ok { color: var(--accent); }
+
+/* ---------- 17. FOOTER ---------- */
+.footer {
+  padding: clamp(60px, 9vw, 120px) var(--gut) 34px;
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+.footer__big {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(52px, 17vw, 260px);
+  line-height: .85;
+  letter-spacing: -.05em;
+  text-align: center;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(243, 241, 236, .2);
+}
+.footer__bar {
+  max-width: var(--max);
+  margin: clamp(40px, 6vw, 70px) auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.footer__bar p { margin: 0; }
+.footer__links { display: flex; gap: 22px; }
+.footer__links a { transition: color .3s; }
+.footer__links a:hover { color: var(--accent); }
+
+/* ---------- 18. 動畫的起始狀態 ----------
+   只有在 JS 有載入時才把元素藏起來，避免 JS 壞掉時整頁空白 */
+html.js [data-reveal] { opacity: 0; transform: translateY(26px); }
+html.js .line > [data-split] { display: block; }
+
+/* ---------- 19. 尊重「減少動態效果」的系統設定 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  html.js [data-reveal] { opacity: 1; transform: none; }
+  .grain { display: none; }
+}

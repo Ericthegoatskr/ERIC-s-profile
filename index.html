@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>蔡承諺 Eric Tsai — 資訊工程 / 數據應用</title>
+<meta name="description" content="蔡承諺 Eric Tsai 的個人作品集。義守大學資訊工程學系，專注於資料庫、Python 與數據應用。">
+<meta name="theme-color" content="#08080a">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="蔡承諺 Eric Tsai — 資訊工程 / 數據應用">
+<meta property="og:description" content="義守大學資訊工程學系，專注於資料庫、Python 與數據應用。">
+<meta property="og:locale" content="zh_TW">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2308080a'/><text y='.9em' x='50%25' text-anchor='middle' font-size='62' font-family='sans-serif' font-weight='bold' fill='%23ffae3b'>E</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- 只有在 JS 能跑的時候才啟用進場動畫，否則內容一律直接顯示 -->
+<script>document.documentElement.classList.add('js');</script>
+</head>
+
+<body>
+
+<!-- ===== 開場載入畫面 ===== -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <span class="loader__label">ERIC TSAI</span>
+    <span class="loader__count" id="loaderCount">00</span>
+  </div>
+  <div class="loader__bar"><i id="loaderBar"></i></div>
+</div>
+
+<!-- ===== 自訂游標（手機不顯示） ===== -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor__ring"></div>
+  <div class="cursor__dot"></div>
+</div>
+
+<!-- ===== 畫面雜訊顆粒 ===== -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ===== 捲動進度條 ===== -->
+<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+
+<!-- ===== 導覽列 ===== -->
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#top" data-hover>
+    <span class="nav__logo-mark">E</span>
+    <span class="nav__logo-text">蔡承諺</span>
+  </a>
+
+  <nav class="nav__links" id="navLinks" aria-label="主選單">
+    <a href="#about"   data-hover><span>關於</span></a>
+    <a href="#work"    data-hover><span>經歷</span></a>
+    <a href="#skills"  data-hover><span>技能</span></a>
+    <a href="#contact" data-hover><span>聯絡</span></a>
+  </nav>
+
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="開啟選單">
+    <i></i><i></i>
+  </button>
+</header>
+
+<main id="top">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero">
+    <canvas class="hero__canvas" id="gl" aria-hidden="true"></canvas>
+    <div class="hero__fade" aria-hidden="true"></div>
+
+    <div class="hero__inner">
+      <p class="hero__eyebrow" data-reveal>
+        <span class="dot" aria-hidden="true"></span>
+        資訊工程 · 數據應用 · Taipei, Taiwan
+      </p>
+
+      <h1 class="hero__title">
+        <span class="line"><span data-split>ERIC</span></span>
+        <span class="line"><span data-split>TSAI</span></span>
+      </h1>
+
+      <div class="hero__meta">
+        <p class="hero__cn" data-reveal>蔡承諺</p>
+        <p class="hero__desc" data-reveal>
+          我把雜亂的資料，整理成可以拿來做決定的東西。<br>
+          從資料庫到 Python，從數字到答案。
+        </p>
+      </div>
+
+      <div class="hero__actions" data-reveal>
+        <a class="btn btn--solid" href="#contact" data-magnetic data-hover>
+          <span>聯絡我</span>
+        </a>
+        <a class="btn btn--ghost" href="#work" data-magnetic data-hover>
+          <span>看我的經歷</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true">
+      <span>SCROLL</span>
+      <i></i>
+    </div>
+  </section>
+
+  <!-- ===================== 跑馬燈 ===================== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track" id="marqueeTrack">
+      <span>DATABASE ✦ PYTHON ✦ SQL ✦ 數據應用 ✦ 資料分析 ✦ 自動化 ✦</span>
+      <span>DATABASE ✦ PYTHON ✦ SQL ✦ 數據應用 ✦ 資料分析 ✦ 自動化 ✦</span>
+      <span>DATABASE ✦ PYTHON ✦ SQL ✦ 數據應用 ✦ 資料分析 ✦ 自動化 ✦</span>
+    </div>
+  </div>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="section" id="about">
+    <div class="section__head">
+      <span class="tag" data-reveal>01 — ABOUT</span>
+      <h2 class="h2"><span class="line"><span data-split>關於我</span></span></h2>
+    </div>
+
+    <div class="about">
+      <div class="about__text">
+        <!-- 這段自我介紹可以自己改成你想說的話 -->
+        <p class="lead" data-reveal>
+          我是蔡承諺，2024 年畢業於義守大學資訊工程學系。
+        </p>
+        <p data-reveal>
+          我喜歡處理「看起來很亂」的問題。資料散在不同地方、格式都不一樣、
+          每次要用都要重做一次 — 這種事情我會想辦法把它變成一條穩定的流程。
+        </p>
+        <p data-reveal>
+          目前在台聚集團資訊處數據應用部，日常圍繞著資料庫查詢、資料清理與分析。
+          工作之外，我當過籃球教練，也在中華職棒的賽事現場待過，
+          那些經驗讓我習慣在很吵的環境裡，把事情講清楚。
+        </p>
+      </div>
+
+      <aside class="about__facts">
+        <div class="fact" data-reveal>
+          <b class="fact__num" data-count="2024">2024</b>
+          <span class="fact__label">畢業於義守大學<br>資訊工程學系</span>
+        </div>
+        <div class="fact" data-reveal>
+          <b class="fact__num" data-count="3">3</b>
+          <span class="fact__label">段工作與實務經歷</span>
+        </div>
+        <div class="fact" data-reveal>
+          <b class="fact__num" data-count="2">2</b>
+          <span class="fact__label">主力技術方向<br>Database / Python</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== WORK ===================== -->
+  <section class="section section--alt" id="work">
+    <div class="section__head">
+      <span class="tag" data-reveal>02 — EXPERIENCE</span>
+      <h2 class="h2"><span class="line"><span data-split>工作經歷</span></span></h2>
+    </div>
+
+    <!-- 每一個 .job 就是一段經歷，可以複製整塊來新增 -->
+    <ol class="jobs">
+      <li class="job" data-reveal>
+        <div class="job__when">現職</div>
+        <div class="job__body">
+          <h3 class="job__title">台聚集團 — 資訊處 數據應用部</h3>
+          <p class="job__role">數據應用</p>
+          <p class="job__desc">
+            負責資料的取得、整理與分析，協助各部門把手上的數字變成能看懂的報表與結論。
+          </p>
+          <ul class="job__tags">
+            <li>SQL</li><li>Python</li><li>資料處理</li><li>報表</li>
+          </ul>
+        </div>
+        <span class="job__index" aria-hidden="true">01</span>
+      </li>
+
+      <li class="job" data-reveal>
+        <div class="job__when">兼職</div>
+        <div class="job__body">
+          <h3 class="job__title">CPBL 中華職棒</h3>
+          <p class="job__role">賽事現場工作人員</p>
+          <p class="job__desc">
+            參與職棒賽事的現場運作，在時間壓力下和不同組別協調，確保流程順利進行。
+          </p>
+          <ul class="job__tags">
+            <li>現場執行</li><li>跨組協調</li><li>臨場應變</li>
+          </ul>
+        </div>
+        <span class="job__index" aria-hidden="true">02</span>
+      </li>
+
+      <li class="job" data-reveal>
+        <div class="job__when">兼職</div>
+        <div class="job__body">
+          <h3 class="job__title">活力小猴</h3>
+          <p class="job__role">籃球教練</p>
+          <p class="job__desc">
+            帶兒童籃球課程，把動作拆成小孩聽得懂的步驟，也學會怎麼讓一群人願意一起做同一件事。
+          </p>
+          <ul class="job__tags">
+            <li>教學</li><li>帶隊</li><li>溝通</li>
+          </ul>
+        </div>
+        <span class="job__index" aria-hidden="true">03</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section class="section" id="skills">
+    <div class="section__head">
+      <span class="tag" data-reveal>03 — SKILLS</span>
+      <h2 class="h2"><span class="line"><span data-split>專業技能</span></span></h2>
+    </div>
+
+    <div class="skills">
+      <!-- data-level 是熟練度百分比，自己調整就會跟著動 -->
+      <div class="skill" data-reveal data-level="85" style="--lvl: 85%">
+        <div class="skill__top">
+          <h3>Database / SQL</h3>
+          <span class="skill__pct">85</span>
+        </div>
+        <p class="skill__desc">資料庫查詢、資料表設計、清理與整併不同來源的資料。</p>
+        <div class="skill__bar"><i></i></div>
+      </div>
+
+      <div class="skill" data-reveal data-level="80" style="--lvl: 80%">
+        <div class="skill__top">
+          <h3>Python</h3>
+          <span class="skill__pct">80</span>
+        </div>
+        <p class="skill__desc">資料處理與分析、重複性工作自動化、串接資料來源。</p>
+        <div class="skill__bar"><i></i></div>
+      </div>
+
+      <div class="skill" data-reveal data-level="70" style="--lvl: 70%">
+        <div class="skill__top">
+          <h3>資料分析與報表</h3>
+          <span class="skill__pct">70</span>
+        </div>
+        <p class="skill__desc">把分析結果整理成別人看得懂、可以直接拿去用的內容。</p>
+        <div class="skill__bar"><i></i></div>
+      </div>
+
+      <div class="skill" data-reveal data-level="65" style="--lvl: 65%">
+        <div class="skill__top">
+          <h3>網頁基礎</h3>
+          <span class="skill__pct">65</span>
+        </div>
+        <p class="skill__desc">HTML / CSS / JavaScript，做得出可以互動的前端頁面。</p>
+        <div class="skill__bar"><i></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section section--alt" id="contact">
+    <div class="section__head">
+      <span class="tag" data-reveal>04 — CONTACT</span>
+      <h2 class="h2"><span class="line"><span data-split>聯絡我</span></span></h2>
+    </div>
+
+    <div class="contact">
+      <div class="contact__info">
+        <a class="contact__row" href="mailto:tsaieric15@gmail.com" data-reveal data-hover>
+          <span class="contact__k">EMAIL</span>
+          <span class="contact__v">tsaieric15@gmail.com</span>
+        </a>
+        <a class="contact__row" href="tel:+886978686026" data-reveal data-hover>
+          <span class="contact__k">PHONE</span>
+          <span class="contact__v">0978 686 026</span>
+        </a>
+        <div class="contact__row contact__row--static" data-reveal>
+          <span class="contact__k">BASED IN</span>
+          <span class="contact__v">台北市內湖區</span>
+        </div>
+
+        <div class="contact__note" data-reveal>
+          <p class="contact__note-title"><span class="dot" aria-hidden="true"></span>目前開放合作與工作機會</p>
+          <p class="contact__note-text">
+            專案合作、職缺邀約，或只是想聊聊資料要怎麼整理，都歡迎直接寄信給我。
+          </p>
+        </div>
+      </div>
+
+      <!-- 靜態網站沒有後端，所以送出會開啟你的信箱程式，內容已經幫你填好 -->
+      <form class="form" id="contactForm" novalidate data-reveal>
+        <div class="field">
+          <input type="text" id="name" name="name" required placeholder=" " autocomplete="name">
+          <label for="name">你的名字</label>
+        </div>
+        <div class="field">
+          <input type="email" id="email" name="email" required placeholder=" " autocomplete="email">
+          <label for="email">你的電子郵件</label>
+        </div>
+        <div class="field">
+          <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
+          <label for="message">想說的話</label>
+        </div>
+        <button class="btn btn--solid btn--full" type="submit" data-magnetic data-hover>
+          <span>送出訊息</span>
+        </button>
+        <p class="form__note" id="formNote" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__big" aria-hidden="true">LET'S TALK</div>
+  <div class="footer__bar">
+    <p>© <span id="year">2026</span> 蔡承諺 Eric Tsai</p>
+    <ul class="footer__links">
+      <li><a href="mailto:tsaieric15@gmail.com" data-hover>Email</a></li>
+      <li><a href="https://github.com/ericthegoatskr" target="_blank" rel="noopener" data-hover>GitHub</a></li>
+      <li><a href="#top" data-hover>回到頂端</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/js/gl.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
